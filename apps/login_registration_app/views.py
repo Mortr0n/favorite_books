@@ -26,7 +26,7 @@ def register(request):
                                     password=hashed_pw )
     # put user's id in request.session
     request.session['user_id']=new_user.id
-    return redirect('/success')
+    return redirect('/books')
 
 def success(request):
     if 'user_id' not in request.session:
@@ -49,7 +49,7 @@ def login(request):
     this_user = User.objects.filter(email = request.POST['email'])[0]
     # put user in request.session
     request.session['user_id'] = this_user.id
-    return redirect('/success')
+    return redirect('/books')
         
 
 def logout(request):
