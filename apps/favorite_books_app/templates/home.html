@@ -42,8 +42,15 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary" value="{{this_user.id}}">Submit</button>
-                        
                     </form>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}> {{ message }} </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                
                 </div>
                 
                 <div class="col-6">
@@ -63,7 +70,7 @@
                             {{like.}}
                             {% endfor %}
                             {{book.users_who_like.user_id}}
-                            {% if this_user.id != book.users_who_like %}
+                            {% if this_user not in book.users_who_like.all %}
                             <form class="form-group" action="book/{{book.id}}/like" method="POST">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-link">Add To Favorites</button>
@@ -71,6 +78,9 @@
                             {% else %}
                            <p>This is one of your Favorites!</p>
                             {% endif %}
+                            {% for person in books.users_who_like.all %}
+                            {{person.first_name}}
+                            {% endfor %}
                         </li>
                     </ul>
 
