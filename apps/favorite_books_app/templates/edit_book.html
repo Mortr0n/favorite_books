@@ -1,56 +1,74 @@
 <!DOCTYPE html>
 <html lang='en-US'>
+
 <head>
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>{{this_book.title}}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" 
-    rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" 
-    crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" 
-    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     <div id='wrapper'>
         <div class="row">
-            <div class="col-10">
+            <div class="col-9">
                 <h1>Welcome: {{this_user.first_name}}!</h1>
+            </div>
+            <div class="col-1">
+                <a href="/books">Home</a>
             </div>
             <div class="col-1">
                 <a href="/logout">Log out</a>
             </div>
-    
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <form class="form-group" action="/books/book/{{this_book.id}}/edit" method="POST">
-                {% csrf_token %}
-                <input type="text" class="form-control" name="title" value="{{this_book.title}}">
-                <p>Added by: {{this_book.uploaded_by.first_name}} {{this_book.uploaded_by.last_name}}</p>
-                <p>Added on: {{this_book.created_at}} </p>
-
-                <div class="mb-3 row">
-                    <label for="desc" class="col-sm-2 form-label">Description</label>
-                    <div class="col-sm-6">
-                        <textarea class="form-control" name="desc" rows="3">{{this_book.desc}}</textarea>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <form class="form-group" action="/books/book/{{this_book.id}}/edit" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" name="title" value="{{this_book.title}}">
+                        <p>Added by: {{this_book.uploaded_by.first_name}} {{this_book.uploaded_by.last_name}}</p>
+                        <p>Added on: {{this_book.created_at}} </p>
+                        <div class="mb-3 row">
+                            <label for="desc" class="col-sm-2 form-label">Description</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control" name="desc" rows="3">{{this_book.desc}}</textarea>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary mr-2" value="{{this_user.id}}">Update</button>
+                        </form>
+                            <form class="form-group" action="/books/book/{{this_book.id}}/delete">
+                                <button type="submit" class="btn btn-danger mt-2 ml-2" value="{{this_user.id}}">Delete</button>
+                            </form>
+                        </div>
+                    
+                    
+                </div>
+                <div class="col-5 offset-1">
+                    <div class="col4">
+                        <h2>Liked By</h2>
+                        <ul>
+                            {% for book in this_book.users_who_like.all %}
+                            <li>{{book.first_name}} {{book.last_name}}</li>
+                            
+                            {% if this_user.id == book.id %}
+                            <form class="form-group" action="/books/book/{{book.id}}/unlike" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link">Remove from Favorites</button>
+                            {% endif %}
+                            </form>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" value="{{this_user.id}}">Update</button>
-            </form>
-            <form class="form-group" action="/books/book/{{this_book.id}}/delete">
-                <button type="submit" class="btn btn-danger" value="{{this_user.id}}">Delete</button>
-            </form>
-           
-        </div>
-        <div class="col-6">
-            {% for book in all_books %}
-            <p>{{book.users_who_like.first_name}}  hi</p>
-            {% endfor %}
-        </div>
-    </div>
+            </div>
 </body>
+
 </html>

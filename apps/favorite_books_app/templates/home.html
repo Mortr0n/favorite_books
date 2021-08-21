@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang='en-US'>
+
 <head>
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" 
-    rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" 
-    crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" 
-    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
     <title>Favorite Books Home</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     <div id='wrapper'>
         <div class="row">
-            <div class="col-10">
+            <div class="col-9">
                 <h1>Welcome: {{this_user.first_name}}!</h1>
+            </div>
+            <div class="col-1">
+                <a href="/books">Home</a>
             </div>
             <div class="col-1">
                 <a href="/logout">Log out</a>
@@ -31,9 +35,9 @@
                         {% csrf_token %}
                         <div class="mb-3 row">
                             <label for="title" class="col-sm-2 form-label">Title</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" name="title">
-                        </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="title">
+                            </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="desc" class="col-sm-2 form-label">Description</label>
@@ -41,18 +45,19 @@
                                 <textarea class="form-control" name="desc" rows="3"></textarea>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" value="{{this_user.id}}">Submit</button>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary" value="{{this_user.id}}">Submit</button>
+                        </div>
+                        
                     </form>
                     {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}
-                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}> {{ message }} </li>
+                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }} </li>
                         {% endfor %}
                     </ul>
                     {% endif %}
-                
                 </div>
-                
                 <div class="col-6">
                     <h2 class="h2">All Books</h2>
                     {% for book in all_books %}
@@ -65,7 +70,7 @@
                         </li>
                         <li>(added by {{book.uploaded_by.first_name}})</li>
                         <li>
-                            
+
                             {% for like in likes %}
                             {{like.}}
                             {% endfor %}
@@ -76,18 +81,18 @@
                                 <button type="submit" class="btn btn-link">Add To Favorites</button>
                             </form>
                             {% else %}
-                           <p>This is one of your Favorites!</p>
+                            <p>This is one of your Favorites!</p>
                             {% endif %}
                             {% for person in books.users_who_like.all %}
                             {{person.first_name}}
                             {% endfor %}
                         </li>
                     </ul>
-
-                    {% endfor %}
+                {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

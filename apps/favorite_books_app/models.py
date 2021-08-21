@@ -19,4 +19,3 @@ class Book(models.Model):
     uploaded_by = models.ForeignKey(User, related_name="books_uploaded", on_delete=models.CASCADE)
     users_who_like = models.ManyToManyField(User, related_name="liked_books")
     objects = Book_Manager()
-
